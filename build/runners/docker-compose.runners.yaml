@@ -1,0 +1,11 @@
+services:
+  py_runner:
+    build:
+      context: ../../
+      dockerfile: build/runners/python.dockerfile
+    networks:
+      - runlet_network
+
+networks:
+  runlet_network:
+    external: true
