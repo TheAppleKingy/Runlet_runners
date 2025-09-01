@@ -1,0 +1,51 @@
+x-runner-base: &runner-base
+  user: runner:runner
+  read_only: true
+  pids_limit: 256
+  mem_limit: 256m
+  cpus: 0.5
+  cap_drop:
+    - ALL
+  restart: "no"
+  security_opt:
+    - no-new-privileges=true
+
+services:
+  go_runner:
+    <<: *runner-base
+    build:
+      context: ../
+      dockerfile: build/go.Dockerfile
+    networks:
+      - runlet_network
+    volumes:
+      - go_runner_volume:/tmp
+
+  py_runner:
+    <<: *runner-base
+    build:
+      context: ../
+      dockerfile: build/py.Dockerfile
+    networks:
+      - runlet_network
+    volumes:
+      - py_runner_volume:/tmp
+  
+  js_runner:
+    <<: *runner-base
+    build:
+      context: ../
+      dockerfile: build/js.Dockerfile
+    networks:
+      - runlet_network
+    volumes:
+      - js_runner_volume:/tmp
+
+networks:
+  runlet_network:
+    external: true
+
+volumes:
+  py_runner_volume:
+  js_runner_volume:
+  go_runner_volume:
