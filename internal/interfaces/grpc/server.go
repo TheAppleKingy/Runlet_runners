@@ -11,16 +11,17 @@ import (
 
 type Server struct {
 	runner.UnimplementedRunnerServer
+	RunService *service.RunCodeService
 }
 
 func (s *Server) RunCode(ctx context.Context, request *runner.RunCodeRequest) (*runner.RunCodeResponse, error) {
-	var testsData []dto.RunTestData
+	var testsData []dto.RunData
 	var response runner.RunCodeResponse
 	if err := json.Unmarshal(request.Cases, &testsData); err != nil {
 		slog.Error("cannot decode cases to run tests", "error", err, "problem_id", request.Problem, "student_id", request.Student, "runner", request.Lang)
 		return &response, err
 	}
-	results := service.TestSolution(testsData, int(request.Student), int(request.Problem), request.Lang, request.Code)
+	results := s.RunService.TestSolution(testsData, int(request.Student), int(request.Problem), request.Lang, request.Code)
 	r, _ := json.Marshal(results)
 	response.Results = r
 	return &response, nil

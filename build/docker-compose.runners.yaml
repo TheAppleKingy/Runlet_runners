@@ -1,5 +1,4 @@
 x-runner-base: &runner-base
-  user: runner:runner
   read_only: true
   pids_limit: 256
   mem_limit: 256m
@@ -20,6 +19,16 @@ services:
       - runlet_network
     volumes:
       - go_runner_volume:/tmp
+  
+  cs_runner:
+    <<: *runner-base
+    build:
+      context: ../
+      dockerfile: build/cs.Dockerfile
+    networks:
+      - runlet_network
+    volumes:
+      - cs_runner_volume:/tmp
 
   py_runner:
     <<: *runner-base
@@ -41,6 +50,16 @@ services:
     volumes:
       - js_runner_volume:/tmp
 
+  cpp_runner:
+    <<: *runner-base
+    build:
+      context: ../
+      dockerfile: build/cpp.Dockerfile
+    networks:
+      - runlet_network
+    volumes:
+      - cpp_runner_volume:/tmp
+
 networks:
   runlet_network:
     external: true
@@ -49,3 +68,5 @@ volumes:
   py_runner_volume:
   js_runner_volume:
   go_runner_volume:
+  cs_runner_volume:
+  cpp_runner_volume:

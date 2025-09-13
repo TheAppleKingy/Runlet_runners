@@ -1,8 +1,6 @@
-FROM golang:1.24.5-alpine 
+FROM frolvlad/alpine-gxx:latest
 
-ENV GOCACHE=/tmp/.cache
-ENV GOTMPDIR=/tmp
-ENV LANG=Go
+ENV LANG="C++"
 ENV LANGS_CONF_PATH=/home/runner/languages.yaml
 
 RUN addgroup -S runner && adduser -S runner -G runner
