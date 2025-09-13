@@ -1,6 +1,6 @@
 package dto
 
-type RunTestData struct {
-	TestNum int    `json:"test_num"`
-	Input   string `json:"input"`
+type RunData struct {
+	RunNum int    `json:"test_num"`
+	Input  string `json:"input"`
 }
